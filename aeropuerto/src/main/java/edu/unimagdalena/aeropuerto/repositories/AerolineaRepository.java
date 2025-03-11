@@ -1,21 +1,19 @@
 package edu.unimagdalena.aeropuerto.repositories;
 
 import edu.unimagdalena.aeropuerto.entities.Aerolinea;
-import edu.unimagdalena.aeropuerto.entities.Reserva;
-import org.apache.catalina.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface AerolineaRepository extends Repository<Aerolinea, Long> {
+public interface AerolineaRepository extends JpaRepository<Aerolinea, Long> {
 
-    List<Aerolinea> FindByOrderByIdDesc();
-    List<Aerolinea> FindByOrderByIdAsc();
-    Optional<Aerolinea> FindById(Long id);
-    List<Aerolinea> FinByIdLessThan(Long id);
-    List<Aerolinea> FindByNombreContaining(String nombre);
+    List<Aerolinea> findAllByOrderByIdDesc();
+    List<Aerolinea> findAllByOrderByIdAsc();
+    Optional<Aerolinea> findById(Long id);
+    List<Aerolinea> findByIdLessThan(Long id);
+    List<Aerolinea> findByNombreContaining(String nombre);
 
     @Query("select a from Aerolinea a order by a.nombre asc")
     List<Aerolinea> obtenerAerolineasOrdenadasAsc();
@@ -31,10 +29,5 @@ public interface AerolineaRepository extends Repository<Aerolinea, Long> {
 
     @Query("select count(v) from Aerolinea a join a.vuelos v where a.id = ?1")
     Long contarVuelosPorAerolinea(Long aerolineaId);
-
-
-
-
-
 
 }

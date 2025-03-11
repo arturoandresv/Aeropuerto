@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface VueloRepository extends JpaRepository<Vuelo, Long> {
     Optional<Vuelo> findById(long id);
-    List<Vuelo> getAllById(long id);
-    List<Vuelo> getAllByOrigen(String nombre);
-    List<Vuelo> getAllByDestino(String nombre);
-    Optional<Vuelo> findByNumeroVuelo(String numeroVuelo);
+    List<Vuelo> findAllById(long id);
+    List<Vuelo> findAllByOrigen(String origen);
+    List<Vuelo> findAllByDestino(String destino);
+    Optional<Vuelo> findByNumeroVuelo(UUID numeroVuelo);
 
     @Query("select a from Vuelo a order by a.origen asc")
     List<Vuelo> obtenerVuelosOrdenadosAsc();
@@ -28,4 +29,5 @@ public interface VueloRepository extends JpaRepository<Vuelo, Long> {
 
     @Query("select count(v) from Vuelo a join a.aerolineas v where a.id = ?1")
     Long contarVuelosPorAerolinea(Long aerolineaId);
+
 }

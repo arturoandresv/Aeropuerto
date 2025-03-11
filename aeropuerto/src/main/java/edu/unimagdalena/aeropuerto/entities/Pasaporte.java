@@ -1,12 +1,9 @@
 package edu.unimagdalena.aeropuerto.entities;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @Entity
@@ -20,7 +17,7 @@ public class Pasaporte {
     @Column(nullable = false)
     private String numero;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name="pasajero_id", referencedColumnName = "id")
     private Pasajero pasajero;
 
