@@ -3,11 +3,12 @@ package edu.unimagdalena.aeropuerto.repositories;
 import edu.unimagdalena.aeropuerto.entities.Pasaporte;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public interface PasaporteRepository extends JpaRepository<Pasaporte, Long> {
     Optional<Pasaporte> findByid(Long id);
     Optional<Pasaporte> findByNumero(String numero);
@@ -15,13 +16,14 @@ public interface PasaporteRepository extends JpaRepository<Pasaporte, Long> {
     List<Pasaporte> findAllByOrderByIdDesc();
     List<Pasaporte> findAllByOrderByIdAsc();
 
+
     @Query("select p from Pasaporte p order by p.numero asc")
     List<Pasaporte> obtenerPasaportesOrdenadosAsc();
 
     @Query("select count (p) from Pasaporte p")
     Long contarPasaportes();
 
-    @Query("select p from Pasaporte p where lower(p.numero) = lower(?1)")
+    @Query("select p from Pasaporte p where p.numero = ?1")
     Pasaporte buscarPorNumero(String numero);
 
     @Query("select p from Pasaporte p where p.id in ?1")

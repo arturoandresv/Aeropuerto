@@ -2,31 +2,53 @@ package edu.unimagdalena.aeropuerto.repositories;
 
 import edu.unimagdalena.aeropuerto.entities.Pasajero;
 import edu.unimagdalena.aeropuerto.entities.Pasaporte;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.TestcontainersConfiguration;
 
+import static org.junit.jupiter.api.Assertions.*;
 @Import(TestcontainersConfiguration.class)
 @Testcontainers
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PasaporteRepositoryTest {
-
-    @Container
-    public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.4")
-            .withDatabaseName("testdb")
-            .withUsername("testuser")
-            .withPassword("testpass");
+class PasaporteRepositoryTest {
 
     @Autowired
     private PasaporteRepository pasaporteRepository;
+
+    @Test
+    void findByid() {
+    }
+
+    @Test
+    void findByNumero() {
+    }
+
+    @Test
+    void findByIdAndNumero() {
+    }
+
+    @Test
+    void findAllByOrderByIdDesc() {
+    }
+
+    @Test
+    void findAllByOrderByIdAsc() {
+    }
+
+    @Test
+    void obtenerPasaportesOrdenadosAsc() {
+    }
+
+    @Test
+    void contarPasaportes() {
+    }
+
 
     @Test
     public void buscarPorNumero() {
@@ -43,5 +65,13 @@ public class PasaporteRepositoryTest {
 
         Pasaporte expected = pasaporteRepository.buscarPorNumero("12345");
         Assertions.assertEquals(expected.getNumero(), pasaporte.getNumero());
+    }
+
+    @Test
+    void buscarPorListaIds() {
+    }
+
+    @Test
+    void buscarPorNumeroParcial() {
     }
 }

@@ -1,44 +1,56 @@
 package edu.unimagdalena.aeropuerto.repositories;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.TestcontainersConfiguration;
 
+import static org.junit.jupiter.api.Assertions.*;
 @Import(TestcontainersConfiguration.class)
 @Testcontainers
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class AerolineaRepositoryTest {
+class AerolineaRepositoryTest {
 
-    @Container
-    public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.4")
-            .withDatabaseName("testdb")
-            .withUsername("testuser")
-            .withPassword("testpass");
+    @Test
+    void findAllByOrderByIdDesc() {
+    }
 
-    @Autowired
-    private AerolineaRepository aerolineaRepository;
+    @Test
+    void findAllByOrderByIdAsc() {
+    }
 
-//    @Test
-//    public void obtenerAerolineasOrdenadasAsc(){
-//        Aerolinea aerolinea = Aerolinea.builder()
-//                .nombre("Avianca")
-//                .build();
-//
-//        aerolineaRepository.save(aerolinea);
-//
-//        aerolineaRepository.obtenerAerolineasOrdenadasAsc();
-//
-//    }
+    @Test
+    void findById() {
+    }
 
+    @Test
+    void findByIdLessThan() {
+    }
 
+    @Test
+    void findByNombreContaining() {
+    }
 
+    @Test
+    void obtenerAerolineasOrdenadasAsc() {
+    }
 
+    @Test
+    void obtenerAerolineasOrdenadasDesc() {
+    }
 
+    @Test
+    void obtenerAerolineasConVuelos() {
+    }
 
+    @Test
+    void buscarAerolineasPorVuelo() {
+    }
+
+    @Test
+    void contarVuelosPorAerolinea() {
+    }
 }
