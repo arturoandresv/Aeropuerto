@@ -1,12 +1,12 @@
 package edu.unimagdalena.aeropuerto.services;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import edu.unimagdalena.aeropuerto.entities.Pasajero;
 import edu.unimagdalena.aeropuerto.entities.Pasaporte;
 import edu.unimagdalena.aeropuerto.repositories.PasaporteRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -48,9 +48,10 @@ class PasaporteServiceTest {
 
         Pasaporte createdPasaporte = pasaporteService.createPasaporte(pasaporte);
 
-        Assertions.assertNotNull(createdPasaporte.getId());
-        Assertions.assertEquals("12345", createdPasaporte.getNumero());
-        Assertions.assertEquals("Jose", createdPasaporte.getPasajero().getNombre());
+        assertNotNull(createdPasaporte.getId());
+        assertEquals("12345", createdPasaporte.getNumero());
+        assertEquals("Jose", createdPasaporte.getPasajero().getNombre());
+        verify(pasaporteRepository, times(1)).save(pasaporte);
 
     }
 
@@ -58,4 +59,50 @@ class PasaporteServiceTest {
     void findByNumero() {
 
     }
+
+    @Test
+    void findByid() {
+
+    }
+
+    @Test
+    void findByIdAndNumero() {
+
+    }
+
+    @Test
+    void findAllByOrderByIdDesc() {
+
+    }
+
+    @Test
+    void findAllByOrderByIdAsc() {
+
+    }
+
+    @Test
+    void obtenerPasaportesOrdenadosAsc() {
+
+    }
+
+    @Test
+    void contarPasaportes() {
+
+    }
+
+    @Test
+    void buscarPorNumero() {
+
+    }
+
+    @Test
+    void buscarPorListaIds() {
+
+    }
+
+    @Test
+    void buscarPorNumeroParcial() {
+
+    }
+
 }
