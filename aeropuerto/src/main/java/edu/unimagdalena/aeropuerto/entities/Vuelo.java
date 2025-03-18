@@ -25,6 +25,7 @@ public class Vuelo {
     @Column(nullable = false)
     private String destino;
 
+    @Builder.Default
     @ManyToMany
     @JoinTable(
             name = "AEROLINEA_VUELO",

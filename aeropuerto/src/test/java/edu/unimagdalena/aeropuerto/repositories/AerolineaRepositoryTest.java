@@ -11,10 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.TestcontainersConfiguration;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -27,20 +24,23 @@ class AerolineaRepositoryTest {
     @Autowired
     private AerolineaRepository aerolineaRepository;
 
+    @Autowired
+    private VueloRepository vueloRepository;
+
     private List<Aerolinea> crearAerolineas() {
-        Vuelo vuelo1 = Vuelo.builder()
-                .origen("Bogotá")
-                .destino("Medellín")
-                .build();
+        Vuelo vuelo1 = vueloRepository.save(Vuelo.builder()
+                        .numeroVuelo(UUID.fromString("2804220f-481c-4a12-a548-1edc9b40e82c"))
+                        .origen("Bogotá")
+                        .destino("Medellín")
+                        .build());
 
-        Vuelo vuelo2 = Vuelo.builder()
-                .origen("Cali")
-                .destino("Cartagena")
-                .build();
+        Vuelo vuelo2 = vueloRepository.save(Vuelo.builder()
+                        .numeroVuelo(UUID.fromString("cc3df970-5f38-468b-96ec-4818265bfff3"))
+                        .origen("Cali")
+                        .destino("Cartagena")
+                        .build());
 
-        Set<Vuelo> vuelos = new HashSet<>();
-        vuelos.add(vuelo1);
-        vuelos.add(vuelo2);
+        Set<Vuelo> vuelos = new HashSet<>(List.of(vuelo1, vuelo2));
 
         Aerolinea a1 = Aerolinea.builder()
                 .nombre("Avianca")
@@ -52,7 +52,16 @@ class AerolineaRepositoryTest {
                 .vuelos(vuelos)
                 .build();
 
-        return aerolineaRepository.saveAll(List.of(a1, a2));
+        vuelo1.addAerolinea(a1);
+        vuelo1.addAerolinea(a2);
+        vuelo2.addAerolinea(a1);
+        vuelo2.addAerolinea(a2);
+
+        aerolineaRepository.saveAll(List.of(a1, a2));
+
+        vueloRepository.saveAll(List.of(vuelo1, vuelo2));
+
+        return List.of(a1, a2);
     }
 
     @Test
