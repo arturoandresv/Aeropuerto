@@ -27,7 +27,7 @@ public class PasaporteService {
     }
 
     public Optional<Pasaporte> findByid(Long id) {
-        return pasaporteRepository.findByid(id);
+        return pasaporteRepository.findById(id);
     }
 
     public Optional<Pasaporte> findByIdAndNumero(Long id, String numero) {
