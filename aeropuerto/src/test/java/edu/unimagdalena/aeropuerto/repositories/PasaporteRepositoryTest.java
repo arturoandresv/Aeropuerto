@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+
 @Import(TestcontainersConfiguration.class)
 @Testcontainers
 @DataJpaTest
@@ -25,180 +27,115 @@ class PasaporteRepositoryTest {
     @Autowired
     private PasaporteRepository pasaporteRepository;
 
-    @Test
-    void findByid() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
+    private Pasaporte crearPasaporteEjemplo() {
+        return Pasaporte.builder()
                 .numero("12345")
                 .pasajero(Pasajero.builder()
                         .nombre("Jose")
                         .NID("6789")
                         .build())
                 .build();
-
-        pasaporteRepository.save(pasaporte);
-
-        Pasaporte expected = pasaporteRepository.findById(pasaporte.getId()).get();
-        Assertions.assertEquals(expected.getId(), pasaporte.getId());
-
     }
 
     @Test
-    void findByNumero() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
-
+    void testFindById() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
 
-        Optional<Pasaporte> expected = pasaporteRepository.findByNumero(pasaporte.getNumero());
-        Assertions.assertTrue(expected.isPresent());
-
+        Optional<Pasaporte> result = pasaporteRepository.findByid(pasaporte.getId());
+        assertTrue(result.isPresent());
+        assertEquals(pasaporte.getId(), result.get().getId());
     }
 
     @Test
-    void findByIdAndNumero() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
-
+    void testFindByNumero() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
 
-        Optional<Pasaporte> expected = pasaporteRepository.findByIdAndNumero(pasaporte.getId(), pasaporte.getNumero());
-        Assertions.assertTrue(expected.isPresent());
+        Optional<Pasaporte> result = pasaporteRepository.findByNumero(pasaporte.getNumero());
+        assertTrue(result.isPresent());
+        assertEquals("12345", result.get().getNumero());
     }
 
     @Test
-    void findAllByOrderByIdDesc() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
-
+    void testFindByIdAndNumero() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
-        List<Pasaporte> expected = pasaporteRepository.findAllByOrderByIdDesc();
-        Assertions.assertTrue(expected.size() > 0);
 
+        Optional<Pasaporte> result = pasaporteRepository.findByIdAndNumero(pasaporte.getId(), pasaporte.getNumero());
+        assertTrue(result.isPresent());
+        assertEquals(pasaporte.getNumero(), result.get().getNumero());
     }
 
     @Test
-    void findAllByOrderByIdAsc() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
-
+    void testFindAllByOrderByIdDesc() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
 
-        List<Pasaporte> expected = pasaporteRepository.findAllByOrderByIdAsc();
-        Assertions.assertTrue(expected.size() > 0);
+        List<Pasaporte> result = pasaporteRepository.findAllByOrderByIdDesc();
+        assertFalse(result.isEmpty());
+        assertEquals(pasaporte.getId(), result.get(0).getId()); // El único insertado debe estar primero
     }
 
     @Test
-    void obtenerPasaportesOrdenadosAsc() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
-
+    void testFindAllByOrderByIdAsc() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
 
-        List<Pasaporte> expected = pasaporteRepository.findAllByOrderByIdDesc();
-        Assertions.assertTrue(expected.size() > 0);
+        List<Pasaporte> result = pasaporteRepository.findAllByOrderByIdAsc();
+        assertFalse(result.isEmpty());
+        assertEquals(pasaporte.getId(), result.get(0).getId());
     }
 
     @Test
-    void contarPasaportes() {
+    void testObtenerPasaportesOrdenadosAsc() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
+        pasaporteRepository.save(pasaporte);
 
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
+        List<Pasaporte> result = pasaporteRepository.obtenerPasaportesOrdenadosAsc();
+        assertFalse(result.isEmpty());
+        assertTrue(result.stream().anyMatch(p -> p.getNumero().equals("12345")));
+    }
 
+    @Test
+    void testContarPasaportes() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
 
         Long count = pasaporteRepository.contarPasaportes();
-        Assertions.assertEquals(1, count);
-    }
-
-
-    @Test
-    public void buscarPorNumero() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
-
-        pasaporteRepository.save(pasaporte);
-
-        Pasaporte expected = pasaporteRepository.buscarPorNumero(pasaporte.getNumero());
-        Assertions.assertEquals(expected.getNumero(), pasaporte.getNumero());
+        assertEquals(1L, count);
     }
 
     @Test
-    void buscarPorListaIds() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
-
+    void testBuscarPorNumero() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
+
+        Pasaporte result = pasaporteRepository.buscarPorNumero(pasaporte.getNumero());
+        assertNotNull(result);
+        assertEquals("12345", result.getNumero());
+    }
+
+    @Test
+    void testBuscarPorListaIds() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
+        pasaporteRepository.save(pasaporte);
+
         List<Long> ids = new ArrayList<>();
         ids.add(pasaporte.getId());
-        List<Pasaporte> expected = pasaporteRepository.buscarPorListaIds(ids);
-        Assertions.assertTrue(expected.size() > 0);
 
-
-
+        List<Pasaporte> result = pasaporteRepository.buscarPorListaIds(ids);
+        assertFalse(result.isEmpty());
+        assertEquals(pasaporte.getId(), result.get(0).getId());
     }
 
     @Test
-    void buscarPorNumeroParcial() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("6789")
-                        .build())
-                .build();
-
+    void testBuscarPorNumeroParcial() {
+        Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
 
-
-
+        List<Pasaporte> result = pasaporteRepository.buscarPorNumeroParcial("234");
+        assertFalse(result.isEmpty());
+        assertTrue(result.get(0).getNumero().contains("234"));
     }
 }

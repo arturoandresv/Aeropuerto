@@ -13,9 +13,11 @@ import org.testcontainers.utility.TestcontainersConfiguration;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+
 @Import(TestcontainersConfiguration.class)
 @Testcontainers
 @DataJpaTest
@@ -25,16 +27,13 @@ class AerolineaRepositoryTest {
     @Autowired
     private AerolineaRepository aerolineaRepository;
 
-    @Test
-    void findAllByOrderByIdDesc() {
+    private List<Aerolinea> crearAerolineas() {
         Vuelo vuelo1 = Vuelo.builder()
-                .id(1L)
                 .origen("Bogotá")
                 .destino("Medellín")
                 .build();
 
         Vuelo vuelo2 = Vuelo.builder()
-                .id(2L)
                 .origen("Cali")
                 .destino("Cartagena")
                 .build();
@@ -43,53 +42,88 @@ class AerolineaRepositoryTest {
         vuelos.add(vuelo1);
         vuelos.add(vuelo2);
 
-        Aerolinea aerolinea = Aerolinea.builder()
+        Aerolinea a1 = Aerolinea.builder()
                 .nombre("Avianca")
                 .vuelos(vuelos)
                 .build();
-        Aerolinea aerolinea1 = Aerolinea.builder()
-                .nombre("Dorado")
+
+        Aerolinea a2 = Aerolinea.builder()
+                .nombre("LATAM")
                 .vuelos(vuelos)
                 .build();
 
-        List<Aerolinea> aerolineas = aerolineaRepository.findAllByOrderByIdDesc();
-        Assertions.assertThat(aerolineas.get(0).getNombre()).isEqualTo(aerolinea.getNombre());
+        return aerolineaRepository.saveAll(List.of(a1, a2));
+    }
 
+    @Test
+    void findAllByOrderByIdDesc() {
+        crearAerolineas();
+        List<Aerolinea> result = aerolineaRepository.findAllByOrderByIdDesc();
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     void findAllByOrderByIdAsc() {
+        crearAerolineas();
+        List<Aerolinea> result = aerolineaRepository.findAllByOrderByIdAsc();
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     void findById() {
+        List<Aerolinea> aerolineas = crearAerolineas();
+        Optional<Aerolinea> result = aerolineaRepository.findByid(aerolineas.get(0).getId());
+        assertThat(result).isPresent();
     }
 
     @Test
     void findByIdLessThan() {
+        List<Aerolinea> aerolineas = crearAerolineas();
+        Long id = aerolineas.get(1).getId() + 1;
+        List<Aerolinea> result = aerolineaRepository.findByIdLessThan(id);
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     void findByNombreContaining() {
+        crearAerolineas();
+        List<Aerolinea> result = aerolineaRepository.findByNombreContaining("via");
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     void obtenerAerolineasOrdenadasAsc() {
+        crearAerolineas();
+        List<Aerolinea> result = aerolineaRepository.obtenerAerolineasOrdenadasAsc();
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     void obtenerAerolineasOrdenadasDesc() {
+        crearAerolineas();
+        List<Aerolinea> result = aerolineaRepository.obtenerAerolineasOrdenadasDesc();
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     void obtenerAerolineasConVuelos() {
+        crearAerolineas();
+        List<Aerolinea> result = aerolineaRepository.obtenerAerolineasConVuelos();
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     void buscarAerolineasPorVuelo() {
+        List<Aerolinea> aerolineas = crearAerolineas();
+        Vuelo vuelo = aerolineas.get(0).getVuelos().iterator().next();
+        List<Aerolinea> result = aerolineaRepository.buscarAerolineasPorVuelo(vuelo.getId());
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     void contarVuelosPorAerolinea() {
+        List<Aerolinea> aerolineas = crearAerolineas();
+        Long count = aerolineaRepository.contarVuelosPorAerolinea(aerolineas.get(0).getId());
+        assertThat(count).isGreaterThan(0);
     }
 }

@@ -11,7 +11,7 @@ public interface AerolineaRepository extends JpaRepository<Aerolinea, Long> {
 
     List<Aerolinea> findAllByOrderByIdDesc();
     List<Aerolinea> findAllByOrderByIdAsc();
-    Optional<Aerolinea> findById(Long id);
+    Optional<Aerolinea> findByid(Long id);
     List<Aerolinea> findByIdLessThan(Long id);
     List<Aerolinea> findByNombreContaining(String nombre);
 
