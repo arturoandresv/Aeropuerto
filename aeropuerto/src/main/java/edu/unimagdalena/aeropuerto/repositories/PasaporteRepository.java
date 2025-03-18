@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface PasaporteRepository extends JpaRepository<Pasaporte, Long> {
-    Optional<Pasaporte> findByid(Long id);
+    Optional<Pasaporte> findById(Long id);
     Optional<Pasaporte> findByNumero(String numero);
     Optional<Pasaporte> findByIdAndNumero(long id, String numero);
     List<Pasaporte> findAllByOrderByIdDesc();
@@ -31,5 +31,4 @@ public interface PasaporteRepository extends JpaRepository<Pasaporte, Long> {
 
     @Query("select p from Pasaporte p where p.numero like %?1%")
     List<Pasaporte> buscarPorNumeroParcial(String numero);
-
 }

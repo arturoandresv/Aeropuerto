@@ -42,7 +42,7 @@ class PasaporteRepositoryTest {
         Pasaporte pasaporte = crearPasaporteEjemplo();
         pasaporteRepository.save(pasaporte);
 
-        Optional<Pasaporte> result = pasaporteRepository.findByid(pasaporte.getId());
+        Optional<Pasaporte> result = pasaporteRepository.findById(pasaporte.getId());
         assertTrue(result.isPresent());
         assertEquals(pasaporte.getId(), result.get().getId());
     }

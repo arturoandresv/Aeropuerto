@@ -12,7 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 class PasaporteServiceTest {
@@ -59,27 +61,113 @@ class PasaporteServiceTest {
 
     @Test
     void findByNumero() {
+        Pasaporte pasaporte1 = Pasaporte.builder()
+                .numero("09876")
+                .pasajero(Pasajero.builder()
+                        .nombre("Juan")
+                        .NID("12346")
+                        .build())
+                .build();
 
+        when(pasaporteRepository.findByNumero("09876")).thenReturn(Optional.of(pasaporte1));
+        Optional<Pasaporte> result = pasaporteService.findByNumero("09876");
+        assertTrue(result.isPresent());
+        assertEquals("09876", result.get().getNumero());
+        verify(pasaporteRepository, times(1)).findByNumero("09876");
     }
-
     @Test
     void findByid() {
+        Pasaporte pasaporte1 = Pasaporte.builder()
+                .numero("09876")
+                .id(1L)
+                .pasajero(Pasajero.builder()
+                        .nombre("Juan")
+                        .NID("12346")
+                        .build())
+                .build();
 
+        when(pasaporteRepository.findById(1L)).thenReturn(Optional.of(pasaporte1));
+        Optional<Pasaporte> result = pasaporteService.findByid(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals(1L, result.get().getId());
+        verify(pasaporteRepository, times(1)).findById(1L);
     }
 
     @Test
     void findByIdAndNumero() {
+        Pasaporte pasaporte1 = Pasaporte.builder()
+                .numero("09876")
+                .id(1L)
+                .pasajero(Pasajero.builder()
+                        .nombre("Juan")
+                        .NID("12346")
+                        .build())
+                .build();
 
+        when(pasaporteRepository.findByIdAndNumero(1L, "09876")).thenReturn(Optional.of(pasaporte1));
+        Optional<Pasaporte> result = pasaporteService.findByIdAndNumero(1L, "09876");
+        assertTrue(result.isPresent());
+        assertEquals(1L, result.get().getId());
+        assertEquals("09876", result.get().getNumero());
+        verify(pasaporteRepository, times(1)).findByIdAndNumero(1L, "09876");
     }
 
     @Test
     void findAllByOrderByIdDesc() {
+        Pasaporte pasaporte1 = Pasaporte.builder()
+                .numero("12345")
+                .id(1L)
+                .pasajero(Pasajero.builder()
+                        .nombre("Jose")
+                        .NID("12345")
+                        .build())
+                .build();
+        Pasaporte pasaporte2 = Pasaporte.builder()
+                .numero("67890")
+                .id(2L)
+                .pasajero(Pasajero.builder()
+                        .nombre("Maria")
+                        .NID("67890")
+                        .build())
+                .build();
+        List<Pasaporte> pasaportes = Arrays.asList(pasaporte2, pasaporte1);
+        when(pasaporteRepository.findAllByOrderByIdDesc()).thenReturn(pasaportes);
+        List<Pasaporte> result = pasaporteService.findAllByOrderByIdDesc();
 
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(2L, result.get(0).getId());
+        assertEquals(1L, result.get(1).getId());
+        verify(pasaporteRepository, times(1)).findAllByOrderByIdDesc();
     }
 
     @Test
     void findAllByOrderByIdAsc() {
+        Pasaporte pasaporte1 = Pasaporte.builder()
+                .numero("12345")
+                .id(1L)
+                .pasajero(Pasajero.builder()
+                        .nombre("Jose")
+                        .NID("12345")
+                        .build())
+                .build();
+        Pasaporte pasaporte2 = Pasaporte.builder()
+                .numero("67890")
+                .id(2L)
+                .pasajero(Pasajero.builder()
+                        .nombre("Maria")
+                        .NID("67890")
+                        .build())
+                .build();
 
+        when(pasaporteRepository.findAllByOrderByIdAsc()).thenReturn(List.of(pasaporte1, pasaporte2));
+        List<Pasaporte> result = pasaporteService.findAllByOrderByIdAsc();
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(1L, result.get(0).getId());
+        assertEquals(2L, result.get(1).getId());
+        verify(pasaporteRepository, times(1)).findAllByOrderByIdAsc();
     }
 
     @Test
