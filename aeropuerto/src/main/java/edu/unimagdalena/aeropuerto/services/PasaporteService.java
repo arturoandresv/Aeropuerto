@@ -1,67 +1,30 @@
 package edu.unimagdalena.aeropuerto.services;
 
 import edu.unimagdalena.aeropuerto.entities.Pasaporte;
-import edu.unimagdalena.aeropuerto.repositories.PasaporteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class PasaporteService {
+public interface PasaporteService {
 
-    private final PasaporteRepository pasaporteRepository;
+    Optional<Pasaporte> findById(Long id);
 
-    @Autowired
-    public PasaporteService(PasaporteRepository pasaporteRepository) {
-        this.pasaporteRepository = pasaporteRepository;
-    }
+    Optional<Pasaporte> findByNumero(String numero);
 
-    public Pasaporte createPasaporte(Pasaporte pasaporte) {
-        return pasaporteRepository.save(pasaporte);
-    }
+    Optional<Pasaporte> findByIdAndNumero(Long id, String numero);
 
-    public Optional<Pasaporte> findByNumero(String numero) {
-        return pasaporteRepository.findByNumero(numero);
-    }
+    List<Pasaporte> findAllByOrderByIdAsc();
 
-    public Optional<Pasaporte> findByid(Long id) {
-        return pasaporteRepository.findById(id);
-    }
+    List<Pasaporte> findAllByOrderByIdDesc();
 
-    public Optional<Pasaporte> findByIdAndNumero(Long id, String numero) {
-        return pasaporteRepository.findByIdAndNumero(id, numero);
-    }
+    List<Pasaporte> obtenerPasaportesOrdenadosAsc();
 
-    public List<Pasaporte> findAllByOrderByIdDesc(){
-        return pasaporteRepository.findAllByOrderByIdDesc();
-    }
+    Long contarPasaportes();
 
-    public List<Pasaporte> findAllByOrderByIdAsc(){
-        return pasaporteRepository.findAllByOrderByIdAsc();
-    }
+    Pasaporte buscarPorNumero(String numero);
 
-    public List<Pasaporte> obtenerPasaportesOrdenadosAsc(){
-        return pasaporteRepository.obtenerPasaportesOrdenadosAsc();
-    }
+    List<Pasaporte> buscarPorListaIds(List<Long> ids);
 
-    public Long contarPasaportes() {
-        return pasaporteRepository.contarPasaportes();
-    }
-
-    public Pasaporte buscarPorNumero(String numero) {
-        return pasaporteRepository.buscarPorNumero(numero);
-    }
-
-    public List<Pasaporte> buscarPorListaIds(List<Long> ids) {
-        return pasaporteRepository.buscarPorListaIds(ids);
-    }
-
-    public List<Pasaporte> buscarPorNumeroParcial(String numero) {
-        return pasaporteRepository.buscarPorNumeroParcial(numero);
-    }
-
-
+    List<Pasaporte> buscarPorNumeroParcial(String numero);
 
 }

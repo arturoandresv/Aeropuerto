@@ -1,63 +1,29 @@
 package edu.unimagdalena.aeropuerto.services;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import edu.unimagdalena.aeropuerto.entities.Pasajero;
 import edu.unimagdalena.aeropuerto.entities.Pasaporte;
 import edu.unimagdalena.aeropuerto.repositories.PasaporteRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
+@ExtendWith(MockitoExtension.class)
 class PasaporteServiceTest {
 
     @Mock
     private PasaporteRepository pasaporteRepository;
 
     @InjectMocks
-    private PasaporteService pasaporteService;
-
-    public PasaporteServiceTest(){
-        MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void createPasaporte() {
-
-        Pasaporte pasaporte = Pasaporte.builder()
-                .numero("12345")
-                .pasajero(Pasajero.builder()
-                        .nombre("Jose")
-                        .NID("12345")
-                        .build())
-                .build();
-
-        when(pasaporteRepository.save(any(Pasaporte.class)))
-                .thenReturn(Pasaporte.builder()
-                        .id(1L)
-                        .numero("12345")
-                        .pasajero(Pasajero.builder()
-                                .nombre("Jose")
-                                .NID("12345")
-                                .build())
-                        .build());
-
-        Pasaporte createdPasaporte = pasaporteService.createPasaporte(pasaporte);
-
-        assertNotNull(createdPasaporte.getId());
-        assertEquals("12345", createdPasaporte.getNumero());
-        assertEquals("Jose", createdPasaporte.getPasajero().getNombre());
-        verify(pasaporteRepository, times(1)).save(pasaporte);
-
-    }
+    private PasaportesServiceImpl pasaporteService;
 
     @Test
     void findByNumero() {
@@ -76,7 +42,7 @@ class PasaporteServiceTest {
         verify(pasaporteRepository, times(1)).findByNumero("09876");
     }
     @Test
-    void findByid() {
+    void findById() {
         Pasaporte pasaporte1 = Pasaporte.builder()
                 .numero("09876")
                 .id(1L)
@@ -87,7 +53,7 @@ class PasaporteServiceTest {
                 .build();
 
         when(pasaporteRepository.findById(1L)).thenReturn(Optional.of(pasaporte1));
-        Optional<Pasaporte> result = pasaporteService.findByid(1L);
+        Optional<Pasaporte> result = pasaporteService.findById(1L);
 
         assertTrue(result.isPresent());
         assertEquals(1L, result.get().getId());
