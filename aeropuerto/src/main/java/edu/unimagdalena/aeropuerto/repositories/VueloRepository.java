@@ -27,7 +27,7 @@ public interface VueloRepository extends JpaRepository<Vuelo, Long> {
     @Query("select v from Vuelo v where v.id = ?1")
     List<Vuelo> buscarVueloPorId(Long vueloId);
 
-    @Query("select count(v) from Vuelo a join a.aerolineas v where a.id = ?1")
+    @Query("select count(v) from Vuelo a join a.aerolineas v where v.id = ?1")
     Long contarVuelosPorAerolinea(Long aerolineaId);
 
 }
