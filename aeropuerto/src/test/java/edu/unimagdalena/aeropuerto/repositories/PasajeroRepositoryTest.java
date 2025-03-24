@@ -3,6 +3,7 @@ package edu.unimagdalena.aeropuerto.repositories;
 import edu.unimagdalena.aeropuerto.entities.Pasajero;
 import edu.unimagdalena.aeropuerto.entities.Pasaporte;
 import edu.unimagdalena.aeropuerto.entities.Reserva;
+import edu.unimagdalena.aeropuerto.entities.Vuelo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -24,6 +25,8 @@ class PasajeroRepositoryTest {
 
     @Autowired
     private PasajeroRepository pasajeroRepository;
+    @Autowired
+    private VueloRepository vueloRepository;
 
     private Pasajero crearPasajeroEjemplo() {
         return Pasajero.builder()
@@ -144,15 +147,24 @@ class PasajeroRepositoryTest {
         Pasajero pasajero = crearPasajeroEjemplo();
         pasajeroRepository.save(pasajero);
 
+        Vuelo vuelo = Vuelo.builder()
+                .numeroVuelo(UUID.randomUUID())
+                .origen("Bogotá")
+                .destino("Medellín")
+                .build();
+        vuelo = vueloRepository.save(vuelo);  // Guardar el vuelo antes de usarlo
+
         Reserva reserva = Reserva.builder()
                 .codigoReserva(UUID.randomUUID())
                 .pasajero(pasajero)
+                .vuelo(vuelo)  // Asignar un vuelo
                 .build();
 
-        reservaRepository.save(reserva);
+        reservaRepository.save(reserva);  // Ahora se guarda sin error
 
         List<Pasajero> result = pasajeroRepository.BuscarPasajerosConReservas();
         assertFalse(result.isEmpty());
         assertEquals("Carlos", result.get(0).getNombre());
     }
+
 }

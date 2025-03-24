@@ -16,6 +16,7 @@ class VueloRepositoryTest {
 
     @Test
     void findById() {
+
     }
 
     @Test
