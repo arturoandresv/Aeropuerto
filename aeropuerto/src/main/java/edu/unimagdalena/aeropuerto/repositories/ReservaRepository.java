@@ -18,16 +18,16 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     @Query("select r from Reserva r where r.codigoReserva = ?1")
     Optional<Reserva> buscarPorCodigoReserva(UUID codigo);
 
-    @Query("select r from Reserva r where r.pasajero = ?1")
+    @Query("select r from Reserva r where r.pasajero.id = ?1")
     List<Reserva> buscarPorPasajeroId(Long pasajeroId);
 
-    @Query("select r from Reserva r where r.vuelo = ?1")
+    @Query("select r from Reserva r where r.vuelo.id = ?1")
     List<Reserva> buscarPorVueloId(Long vueloId);
 
-    @Query("select count(r) from Reserva r where r.vuelo = ?1")
-    long ContarPorVueloId(Long vueloId);
+    @Query("select count(r) from Reserva r where r.vuelo.id = ?1")
+    int ContarPorVueloId(Long vueloId);
 
-    @Query("select count(r) > 0 from Reserva r where r.pasajero = ?1 AND r.vuelo = ?2")
-    boolean ContarPorPasajeroYVueloId(Long pasajeroId, Long vueloId);
+    @Query("select count(r) from Reserva r where r.pasajero.id = ?1 AND r.vuelo.id = ?2")
+    int ContarPorPasajeroYVueloId(Long pasajeroId, Long vueloId);
 
 }
