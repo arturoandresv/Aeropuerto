@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface VueloRepository extends JpaRepository<Vuelo, Long> {
-    Optional<Vuelo> findById(long id);
-    List<Vuelo> findAllById(long id);
+    Optional<Vuelo> findById(Long id);
+    List<Vuelo> findAllById(Long id);
     List<Vuelo> findAllByOrigen(String origen);
     List<Vuelo> findAllByDestino(String destino);
     Optional<Vuelo> findByNumeroVuelo(UUID numeroVuelo);
@@ -19,7 +19,7 @@ public interface VueloRepository extends JpaRepository<Vuelo, Long> {
     List<Vuelo> obtenerVuelosOrdenadosAsc();
 
     @Query("select a from Vuelo a order by a.origen desc")
-    List<Vuelo> obtenerVuelosOrdenadasDesc();
+    List<Vuelo> obtenerVuelosOrdenadosDesc();
 
     @Query("select distinct a from Vuelo a join a.aerolineas v")
     List<Vuelo> obtenerVuelosConAerolineas();

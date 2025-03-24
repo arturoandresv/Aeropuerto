@@ -9,9 +9,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
-    Optional<Reserva> findById(long id);
+    Optional<Reserva> findById(Long id);
     Optional<Reserva> findByCodigoReserva(UUID codigoReserva);
-    Optional<Reserva> findByCodigoReservaAndId(UUID codigoReserva, long id);
+    Optional<Reserva> findByCodigoReservaAndId(UUID codigoReserva, Long id);
     List<Reserva> findAllByOrderByIdDesc();
     List<Reserva> findAllByOrderByIdAsc();
 
