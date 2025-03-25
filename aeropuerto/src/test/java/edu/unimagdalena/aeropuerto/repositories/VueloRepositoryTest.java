@@ -87,7 +87,7 @@ class VueloRepositoryTest {
     void obtenerVuelosOrdenadasDesc() {
         vueloRepository.save(crearVueloEjemplo1());
         vueloRepository.save(Vuelo.builder().numeroVuelo(UUID.randomUUID()).origen("Cartagena").destino("Cali").build());
-        List<Vuelo> vuelos = vueloRepository.obtenerVuelosOrdenadasDesc();
+        List<Vuelo> vuelos = vueloRepository.obtenerVuelosOrdenadosDesc();
         assertFalse(vuelos.isEmpty());
         assertTrue(vuelos.get(0).getOrigen().compareTo(vuelos.get(1).getOrigen()) > 0);
     }
